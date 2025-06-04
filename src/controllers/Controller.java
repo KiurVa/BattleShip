@@ -32,7 +32,7 @@ public class Controller implements MouseListener, MouseMotionListener {
 
         //Listenerid
         view.registerComboBox(new MyComboBoxListener(model, view));
-        view.registerNewGameButton(new MyNewGameListener(model, view, gameTimer)); //TODO GameTimer
+        view.registerNewGameButton(new MyNewGameListener(model, view, gameTimer));
     }
 
     @Override
