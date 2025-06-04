@@ -1,11 +1,14 @@
 package views;
 
+import controllers.Controller;
 import models.Model;
 import views.panels.GameBoard;
 import views.panels.InfoBoard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 
 public class View extends JFrame {
     private Model model;
@@ -28,6 +31,19 @@ public class View extends JFrame {
 //        System.out.println("GameBoard     " +  gameBoard.getLayout());
 //        System.out.println("InfoBoard     " +  infoBoard.getLayout());
 //        System.out.println("pnlCompoments " + infoBoard.getPnlComponent().getLayout());
+    }
+
+    public void registerGameBoardMouse(Controller controller) {
+        gameBoard.addMouseListener(controller);
+        gameBoard.addMouseMotionListener(controller);
+    }
+
+    public void registerComboBox(ItemListener itemListener) {
+        infoBoard.getComboSize().addItemListener(itemListener);
+    }
+
+    public void registerNewGameButton(ActionListener actionListener) {
+        infoBoard.getBtnNewGame().addActionListener(actionListener);
     }
 
     //GETTERS

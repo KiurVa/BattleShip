@@ -166,7 +166,7 @@ public class InfoBoard extends JPanel {
         pnlComponent.add(label, gbc);
         btnNewGame = new JButton("Uus mäng");
         btnNewGame.setFont(fontNormal);
-        btnNewGame.setPreferredSize(new Dimension(105, 25));
+//        btnNewGame.setPreferredSize(new Dimension(150, 25));
         gbc.gridx = 1;
         gbc.gridy = 7;
         gbc.gridheight = 1;
