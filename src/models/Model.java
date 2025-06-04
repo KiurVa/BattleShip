@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Model {
     private int boardSize = 10; //Mängulaua suurus
     private ArrayList<GridData> gridData;
+    private Game game; //Laevade info mängulaual
 
     public Model() {
         gridData = new ArrayList<>();
@@ -52,12 +53,20 @@ public class Model {
         return -1;
     }
 
+    public void setupNewGame() {
+        game =  new Game(boardSize);
+    }
+
     //GETTERS
     public int getBoardSize() {
         return boardSize;
     }
     public ArrayList<GridData> getGridData() {
         return gridData;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     //SETTERS
