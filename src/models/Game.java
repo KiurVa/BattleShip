@@ -54,7 +54,7 @@ public class Game {
                     int c = (startCol + cOffset) % boardSize;
 
                     boolean vertical = random.nextBoolean(); //Määrame juhuslikult kas vertikaalne või horisontaalne
-                    if (tryPlaceShip(r, c, length, vertical || tryPlaceShip(r, c, length, !vertical))) {
+                    if (tryPlaceShip(r, c, length, vertical) || tryPlaceShip(r, c, length, !vertical)) {
                         placed = true;
                         break outerLoop;
                     }
