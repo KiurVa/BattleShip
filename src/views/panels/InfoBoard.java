@@ -27,9 +27,16 @@ public class InfoBoard extends JPanel {
     //Nupud uus mäng ja edetabel
     private JButton btnNewGame;
     private JButton btnScoreboard;
+    //Edetabeli asjad
+    private JRadioButton rdoFile; //Info loetakse failist
+    private JRadioButton rdoDb; //Info loetakse andmebaasist
+    private ButtonGroup btnGroup =  new ButtonGroup(); //Mõlemad rdo nupud on siin
+    private JCheckBox chkWhere; // Eraldi aknas edetabel "linnuke"
+
 
     public InfoBoard() {
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        //setLayout(new FlowLayout(FlowLayout.LEFT)); //Algne layout
+        setLayout(new BorderLayout());
         setPreferredSize(new Dimension(400, 188));
         setBackground(new Color(198, 193, 97));
         //Sellele paneelile lähevad kõik komponendid
@@ -45,7 +52,19 @@ public class InfoBoard extends JPanel {
         setupLine6();
         setupComboBox();
         setupButtons();
-        add(pnlComponent);
+        setupRadioButtons();
+
+        //Tühja osa täitmine, mis on veniv
+        gbc.gridx = 0;
+        gbc.gridy = 12;
+        gbc.gridwidth = 2; //kasutusel on kaks veergu
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        JPanel flowPanel = new JPanel();
+        flowPanel.setOpaque(false); //nähtav ainult veniv
+        pnlComponent.add(flowPanel, gbc);
+        add(pnlComponent,  BorderLayout.CENTER);
     }
 
     private void setupLine1() {
@@ -158,5 +177,99 @@ public class InfoBoard extends JPanel {
         gbc.gridx = 1;
         gbc.gridy = 8;
         pnlComponent.add(btnScoreboard, gbc);
+    }
+    private void setupRadioButtons() {
+        JLabel label = new JLabel("Edetabeli sisu");
+        label.setFont(fontBold);
+        label.setPreferredSize(new Dimension(150, 28));
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+//        gbc.gridheight = 3;
+//        gbc.gridwidth = 1;
+//        gbc.anchor = GridBagConstraints.WEST;
+//        gbc.fill = GridBagConstraints.NONE;
+        pnlComponent.add(label, gbc);
+
+        rdoFile = new JRadioButton("Fail");
+        rdoFile.setFont(fontNormal);
+        rdoFile.setOpaque(false);
+        gbc.gridx = 1;
+        gbc.gridy = 9;
+//        gbc.gridheight = 1;
+        rdoFile.setSelected(true);
+        pnlComponent.add(rdoFile, gbc);
+
+        rdoDb = new JRadioButton("Andmebaas");
+        rdoDb.setFont(fontNormal);
+        rdoDb.setOpaque(false);
+        gbc.gridx = 1;
+        gbc.gridy = 10;
+//        gbc.gridheight = 1;
+        pnlComponent.add(rdoDb, gbc);
+
+        btnGroup.add(rdoFile); //Nupud gruppi
+        btnGroup.add(rdoDb);
+
+        chkWhere = new JCheckBox("Eraldi aknas");
+        chkWhere.setFont(fontNormal);
+        chkWhere.setSelected(true);
+        chkWhere.setOpaque(false);
+        gbc.gridx = 1;
+        gbc.gridy = 11;
+//        gbc.gridheight = 1;
+        pnlComponent.add(chkWhere, gbc);
+    }
+
+    //GETTERS
+    public JPanel getPnlComponent() {
+        return pnlComponent;
+    }
+
+    public JLabel getLblMouseXY() {
+        return lblMouseXY;
+    }
+
+    public JLabel getLblID() {
+        return lblID;
+    }
+
+    public JLabel getLblRowCol() {
+        return lblRowCol;
+    }
+
+    public JLabel getLblTime() {
+        return lblTime;
+    }
+
+    public JLabel getLblShip() {
+        return lblShip;
+    }
+
+    public JLabel getLblGameBoard() {
+        return lblGameBoard;
+    }
+
+    public JComboBox<String> getComboSize() {
+        return comboSize;
+    }
+
+    public JButton getBtnNewGame() {
+        return btnNewGame;
+    }
+
+    public JButton getBtnScoreboard() {
+        return btnScoreboard;
+    }
+
+    public JRadioButton getRdoFile() {
+        return rdoFile;
+    }
+
+    public JRadioButton getRdoDb() {
+        return rdoDb;
+    }
+
+    public JCheckBox getChkWhere() {
+        return chkWhere;
     }
 }

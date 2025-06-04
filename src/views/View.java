@@ -22,5 +22,60 @@ public class View extends JFrame {
         container.add(gameBoard, BorderLayout.CENTER); //Mängulaud ujuvale osale
         container.add(infoBoard, BorderLayout.EAST);
         add(container);
+        // TEST Frame ja Panel Layout managerid
+//        System.out.println("JFRame        " + this.getLayout());
+//        System.out.println("container     " + container.getLayout());
+//        System.out.println("GameBoard     " +  gameBoard.getLayout());
+//        System.out.println("InfoBoard     " +  infoBoard.getLayout());
+//        System.out.println("pnlCompoments " + infoBoard.getPnlComponent().getLayout());
+    }
+
+    //GETTERS
+    public JLabel getLblMouseXY() {
+        return infoBoard.getLblMouseXY();
+    }
+
+    public JLabel getLblID() {
+        return infoBoard.getLblID();
+    }
+
+    public JLabel getLblRowCol() {
+        return infoBoard.getLblRowCol();
+    }
+
+    public JLabel getLblTime() {
+        return infoBoard.getLblTime();
+    }
+
+    public JLabel getLblShip() {
+        return infoBoard.getLblShip();
+    }
+
+    public JLabel getLblGameBoard() {
+        return infoBoard.getLblGameBoard();
+    }
+
+    public JComboBox<String> getComboSize() {
+        return infoBoard.getComboSize();
+    }
+
+    public JButton getBtnNewGame() {
+        return infoBoard.getBtnNewGame();
+    }
+
+    public JButton getBtnScoreboard() {
+        return infoBoard.getBtnScoreboard();
+    }
+
+    public JRadioButton getRdoFile() {
+        return infoBoard.getRdoFile();
+    }
+
+    public JRadioButton getRdoDb() {
+        return infoBoard.getRdoDb();
+    }
+
+    public JCheckBox getChkWhere() {
+        return infoBoard.getChkWhere();
     }
 }
