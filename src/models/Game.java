@@ -7,8 +7,8 @@ public class Game {
     private int boardSize; //Mängulaua suurus
     private int[][] boardMatrix; //Mängulaual asuvad laevad
     private Random random = new Random(); //juhuslikkuse jaoks
-    private int[] ships = {4, 3, 3, 2, 2, 2, 1}; //Laeva pikkused (US)
-    //private int[] ships = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1}; //Laeva pikkus (EE)
+    //private int[] ships = {4, 3, 3, 2, 2, 2, 1}; //Laeva pikkused (US)
+    private int[] ships = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1}; //Laeva pikkus (EE)
     //private int[] ships = {5, 4, 4, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1}; //Laeva pikkus
     private int shipsCounter = 0;
     private int clickCounter = 0;

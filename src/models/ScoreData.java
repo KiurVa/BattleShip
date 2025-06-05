@@ -27,7 +27,7 @@ public class ScoreData implements Comparable<ScoreData> {
         return time;
     }
 
-    public int getClick() {
+    public int getClicks() {
         return click;
     }
 
@@ -52,28 +52,30 @@ public class ScoreData implements Comparable<ScoreData> {
 
     /**
      * Sorteerib time, clicks, ja playestime järgi kasvavalt
+     *
      * @param o the object to be compared.
      * @return
      */
     @Override
     public int compareTo(ScoreData o) {
         // Kasutamine mujal: Collections.sort(MASSIIVINIMI)
-        int cmp =  Integer.compare(this.time, o.time);
-        if(cmp != 0) return cmp;
-        cmp =  Integer.compare(this.click, o.click);
-        if(cmp != 0) return cmp;
+        int cmp = Integer.compare(this.time, o.time);
+        if (cmp != 0) return cmp;
+        cmp = Integer.compare(this.click, o.click);
+        if (cmp != 0) return cmp;
 
         return this.playedTime.compareTo(o.playedTime);
     }
 
     /**
      * Vormindab etteantud aja sekundid kujule MM:SS
+     *
      * @param seconds sekundid kujul 98
      * @return vormindatud aeg
      */
     public String formatGameTime(int seconds) {
-        int min = seconds/60;
-        int sec = seconds/60;
+        int min = seconds / 60;
+        int sec = seconds % 60;
         return String.format("%02d:%02d", min, sec);
     }
 }

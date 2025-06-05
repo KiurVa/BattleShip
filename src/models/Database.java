@@ -1,6 +1,9 @@
 package models;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Database implements AutoCloseable {
     private Connection connection;
@@ -74,5 +77,31 @@ public class Database implements AutoCloseable {
             //throw new RuntimeException(e);
             System.err.println("Viga andmete lisamisel: " + e.getMessage());
         }
+    }
+
+    public ArrayList<ScoreData> select(int boardSize) {
+        ArrayList<ScoreData> results = new ArrayList<>();
+        String sql = "SELECT * FROM " + tableName + " WHERE board_size = ? ORDER BY time, clicks, game_time;";
+
+        try(PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, boardSize);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { //Loeb järgmise kirje
+                    String name = rs.getString("name");
+                    int time = rs.getInt("time");
+                    int clicks = rs.getInt("clicks");
+                    int size = rs.getInt("board_size");
+                    String gameTime = rs.getString("game_time");
+
+                    //Teisendame gameTime LocalDateTime
+                    LocalDateTime played = LocalDateTime.parse(gameTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    ScoreData data = new ScoreData(name, time, clicks, size, played);
+                    results.add(data);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Viga SELECT päringus: " + e.getMessage());
+        }
+        return results;
     }
 }
