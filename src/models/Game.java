@@ -7,8 +7,8 @@ public class Game {
     private int boardSize; //Mängulaua suurus
     private int[][] boardMatrix; //Mängulaual asuvad laevad
     private Random random = new Random(); //juhuslikkuse jaoks
-    //private int[] ships = {4, 3, 3, 2, 2, 2, 1}; //Laeva pikkused (US)
-    private int[] ships = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1}; //Laeva pikkus (EE)
+    private int[] ships = {4, 3, 3, 2, 2, 2, 1}; //Laeva pikkused (US)
+    //private int[] ships = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1}; //Laeva pikkus (EE)
     //private int[] ships = {5, 4, 4, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1}; //Laeva pikkus
     private int shipsCounter = 0;
     private int clickCounter = 0;
@@ -121,7 +121,7 @@ public class Game {
         //Kontrollime igat lahtrit alal - kui kuskil pole tühjust(0), katkestame
         for(int r = area.startRow; r <= area.endRow; r++) {
             for(int c = area.startCol; c <= area.endCol; c++) {
-                if(boardMatrix[r][c] != 0) return false; //Midagi ees, ei sobi
+                if(boardMatrix[r][c] > 0 && boardMatrix[r][c] <=5) return false; //Midagi ees, ei sobi
             }
         }
         return true; //Kõik kohad olid vabad
@@ -134,6 +134,20 @@ public class Game {
         int startCol = Math.max(0, col -1);
         int endCol = Math.min(boardSize -1, vertical ? col + 1 : col + length);
         return new Area(startRow, startCol, endRow, endCol);
+    }
+
+    /**
+     * Selles lahtris klikkis kasutaja hiirega, kas sai pihta või läks mööda
+     * @param row rida
+     * @param col veerg
+     * @param what millega tegu (7 pihtas, 8 mööda)
+     */
+    public void setUserClick(int row, int col, int what) {
+        if (what == 7) {
+            boardMatrix[row][col] = 7; //Pihtas
+        } else if (what == 8) {
+            boardMatrix[row][col] = 8; //Möödas
+        }
     }
 
     //GETTERS
@@ -156,5 +170,31 @@ public class Game {
      */
     public int getShipsParts() {
         return IntStream.of(ships).sum();
+    }
+
+    /**
+     * kas mäng on läbi
+     * @return tagastab true kui läbi, false ei ole läbi
+     */
+    public boolean isGameOver() {
+        return getShipsParts() == getShipsCounter();
+    }
+
+    //SETTERS
+
+    /**
+     * Suurendab klikkide arvu
+     * @param clickCounter ette antud väärtus (1)
+     */
+    public void setClickCounter(int clickCounter) {
+        this.clickCounter += clickCounter;
+    }
+
+    /**
+     * Suurendab leitud laevade kogust etteantud väärtust võrra
+     * @param shipsCounter etteantud väärtus (1)
+     */
+    public void setShipsCounter(int shipsCounter) {
+        this.shipsCounter += shipsCounter;
     }
 }

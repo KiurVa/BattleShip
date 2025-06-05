@@ -30,6 +30,7 @@ public class MyNewGameListener implements ActionListener {
                 SwingUtilities.invokeLater(() -> {
                     view.getBtnNewGame().setText("Katkesta mäng");
                     gameTimer.start();
+                    view.repaint();
                 });
             }).start();
         } else { //Mäng käib

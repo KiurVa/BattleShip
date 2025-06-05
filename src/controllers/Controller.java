@@ -7,7 +7,6 @@ import models.Model;
 import views.View;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -37,7 +36,35 @@ public class Controller implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if(gameTimer.isRunning()) { //Mängu ajal klikkimine ainult toimib
+            //Hiire klikkimise koordinaat, ruudustik
+            int id = model.checkGridIndex(e.getX(), e.getY());
+            int row = model.getRowById(id);
+            int col = model.getColById(id);
+            //hetke laud
+            int[][] matrix = model.getGame().getBoardMatrix();
+            model.getGame().setClickCounter(1); //Kliki lugeja
+            if(matrix[row][col] == 0) { //0 on vesi ehk mööda
+                model.getGame().setUserClick(row, col, 8);
+            } else if(matrix[row][col] >= 1 && matrix[row][col] <= 5) { //Laevale pihta saamine
+                model.getGame().setUserClick(row, col, 7);
+                model.getGame().setShipsCounter(1); //laeva osa lisamini
+                view.getLblShip().setText(String.format("%d / %d", model.getGame().getShipsCounter(), model.getGame().getShipsParts()));
+            }
+            //Näitab konsoolis mängulauda
+            model.getGame().showGameBoard();
+            view.repaint();
+            //Kontrollib mängu lõppu
+            checkGameOver();
+        }
+    }
 
+    private void checkGameOver() {
+        if(model.getGame() != null && model.getGame().isGameOver()) {
+            gameTimer.stop(); //peatab aja
+            view.getBtnNewGame().setText("Uus mäng");
+            JOptionPane.showMessageDialog(view, "Mängu aeg: " + gameTimer.formatGameTime());
+        }
     }
 
     @Override
