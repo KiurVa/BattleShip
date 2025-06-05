@@ -29,6 +29,7 @@ public class MyNewGameListener implements ActionListener {
                 view.getLblShip().setText(model.getGame().getShipsCounter() + "/" + model.getGame().getShipsParts());
                 SwingUtilities.invokeLater(() -> {
                     view.getBtnNewGame().setText("Katkesta mäng");
+                    view.getComboSize().setEnabled(false);
                     gameTimer.start();
                     view.repaint();
                 });
@@ -36,6 +37,7 @@ public class MyNewGameListener implements ActionListener {
         } else { //Mäng käib
             gameTimer.stop();
             view.getBtnNewGame().setText("Uus mäng");
+            view.getComboSize().setEnabled(true);
         }
     }
 }

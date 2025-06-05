@@ -2,6 +2,8 @@ package controllers;
 
 import controllers.listeners.MyComboBoxListener;
 import controllers.listeners.MyNewGameListener;
+import controllers.listeners.MyScoreboardListener;
+import models.Database;
 import models.GameTimer;
 import models.Model;
 import views.View;
@@ -11,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.*;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -35,6 +38,7 @@ public class Controller implements MouseListener, MouseMotionListener {
         //Listenerid
         view.registerComboBox(new MyComboBoxListener(model, view));
         view.registerNewGameButton(new MyNewGameListener(model, view, gameTimer));
+        view.registerScoreBoardButton(new MyScoreboardListener(model, view));
     }
 
     @Override
@@ -66,6 +70,7 @@ public class Controller implements MouseListener, MouseMotionListener {
         if(model.getGame() != null && model.getGame().isGameOver()) {
             gameTimer.stop(); //peatab aja
             view.getBtnNewGame().setText("Uus mäng");
+            view.getComboSize().setEnabled(true);
             //JOptionPane.showMessageDialog(view, "Mängu aeg: " + gameTimer.formatGameTime());
             // Küsi mängija nime
             String name = JOptionPane.showInputDialog(view, "Kuidas on admirali nimi?", "Mäng on läbi", JOptionPane.INFORMATION_MESSAGE);
@@ -77,6 +82,17 @@ public class Controller implements MouseListener, MouseMotionListener {
             }
             //TODO edetabeli faili ja andmebaasi lisamine
             saveEntryToFile(name.trim()); //Faili kirjutamine
+            //Andmebaasi lisamine
+            saveEntryToTable(name.trim());
+        }
+    }
+
+    private void saveEntryToTable(String name) {
+        try(Database db = new Database(model)) {
+            db.insert(name, gameTimer.getElapsedSeconds(), model.getGame().getClickCounter(), model.getBoardSize(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -13,6 +13,9 @@ public class Model {
     //Edetabeli failiga seotud muutujad
     private String scoreFile = "scores.txt";
     private String[] columnNames = new String[]{"Nimi", "Aeg", "Klikke", "Laua suurus", "Mängu aeg"};
+    //Edetabeli andmebaasiga seotud muutujad
+    private String scoreDatabase = "scores.db";
+    private String scoreTable = "scores";
 
     public Model() {
         gridData = new ArrayList<>();
@@ -182,6 +185,14 @@ public class Model {
 
     public String getScoreFile() {
         return scoreFile;
+    }
+
+    public String getScoreDatabase() {
+        return scoreDatabase;
+    }
+
+    public String getScoreTable() {
+        return scoreTable;
     }
 
     //SETTERS
