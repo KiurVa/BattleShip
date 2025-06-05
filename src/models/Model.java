@@ -1,12 +1,18 @@
 package models;
 
 import java.awt.*;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Model {
     private int boardSize = 10; //Mängulaua suurus
     private ArrayList<GridData> gridData;
     private Game game; //Laevade info mängulaual
+    //Edetabeli failiga seotud muutujad
+    private String scoreFile = "scores.txt";
+    private String[] columnNames = new String[]{"Nimi", "Aeg", "Klikke", "Laua suurus", "Mängu aeg"};
 
     public Model() {
         gridData = new ArrayList<>();
@@ -96,9 +102,65 @@ public class Model {
             if (color != null) {
                 g.setColor(color); //Määra värv
                 g.fillRect(gd.getX() + padding, gd.getY() + padding,
-                        gd.getWidth() -2 * padding, gd.getHeight() -2 * padding);
+                        gd.getWidth() - 2 * padding, gd.getHeight() - 2 * padding);
             }
         }
+    }
+
+    /**
+     * Edetabeli faili olemasolu ja sisu kontroll
+     *
+     * @return true kui on korras, false kui pole
+     */
+    public boolean checkFileExistsAndContent() {
+        File file = new File(scoreFile); //Teeb faili failiobjektiks
+        if (!file.exists()) {
+            return false;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(scoreFile))) {
+            String line = br.readLine();
+            if (line == null) {
+                return false;
+            }
+            String[] columns = line.split(";");
+            return columns.length == columnNames.length;
+
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
+            return false;
+        }
+    }
+
+    /**
+     * Edetabeli faili sisu loetakse massiivi ja tagastatakse
+     * @return ScoreData list(Edetabeli info)
+     */
+    public ArrayList<ScoreData> readFromFile() {
+        ArrayList<ScoreData> scoreData = new ArrayList<>();
+        File file = new File(scoreFile);
+        if (file.exists()) {
+            try(BufferedReader br = new BufferedReader(new FileReader(scoreFile))) {
+                int lineNumber = 0;
+                for(String line; (line = br.readLine()) != null; ) {
+                    if(lineNumber > 0) {
+                        String[] columns = line.split(";");
+                        if(Integer.parseInt(columns[3]) == boardSize) {
+                            String name = columns[0];
+                            int gameTime = Integer.parseInt(columns[1]);
+                            int clicks = Integer.parseInt(columns[2]);
+                            int board = Integer.parseInt(columns[3]);
+                            LocalDateTime played = LocalDateTime.parse(columns[4], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                            scoreData.add(new ScoreData(name, gameTime, clicks, board, played));
+                        }
+                    }
+                    lineNumber++;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return scoreData;
     }
 
     //GETTERS
@@ -112,6 +174,14 @@ public class Model {
 
     public Game getGame() {
         return game;
+    }
+
+    public String[] getColumnNames() {
+        return columnNames;
+    }
+
+    public String getScoreFile() {
+        return scoreFile;
     }
 
     //SETTERS
