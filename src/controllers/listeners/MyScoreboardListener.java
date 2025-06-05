@@ -76,7 +76,6 @@ public class MyScoreboardListener implements ActionListener {
                 }
             };
             JTable table = new JTable(tableModel);
-            //TODO tabelil klikkimine
             table.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
