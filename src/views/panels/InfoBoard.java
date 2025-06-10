@@ -220,6 +220,19 @@ public class InfoBoard extends JPanel {
         pnlComponent.add(chkWhere, gbc);
     }
 
+    /**
+     * Muudab edetabeli ja mängulaua suuruse nuppude/valikute aktiivseks ja mitte aktiivseks
+     * @param enabled true korral nupud aktiivseks, false mitte aktiivsed
+     */
+    public void setScoreSizeControlsEnabled(boolean enabled) {
+        comboSize.setEnabled(enabled);
+        rdoDb.setEnabled(enabled);
+        rdoFile.setEnabled(enabled);
+        chkWhere.setEnabled(enabled);
+        btnScoreboard.setEnabled(enabled);
+    }
+
+
     //GETTERS
     public JPanel getPnlComponent() {
         return pnlComponent;

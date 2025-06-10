@@ -49,6 +49,10 @@ public class View extends JFrame {
         infoBoard.getBtnScoreboard().addActionListener(actionListener);
     }
 
+    public void setScoreSizeControlsEnabled(boolean enabled) {
+        infoBoard.setScoreSizeControlsEnabled(enabled);
+    }
+
     //GETTERS
     public JLabel getLblMouseXY() {
         return infoBoard.getLblMouseXY();

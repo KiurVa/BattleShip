@@ -60,9 +60,12 @@ public class Controller implements MouseListener, MouseMotionListener {
             }
             //Näitab konsoolis mängulauda
             model.getGame().showGameBoard();
+
             view.repaint();
             //Kontrollib mängu lõppu
             checkGameOver();
+
+
         }
     }
 
@@ -70,7 +73,7 @@ public class Controller implements MouseListener, MouseMotionListener {
         if(model.getGame() != null && model.getGame().isGameOver()) {
             gameTimer.stop(); //peatab aja
             view.getBtnNewGame().setText("Uus mäng");
-            view.getComboSize().setEnabled(true);
+            view.setScoreSizeControlsEnabled(true);
             //JOptionPane.showMessageDialog(view, "Mängu aeg: " + gameTimer.formatGameTime());
             // Küsi mängija nime
             String name = JOptionPane.showInputDialog(view, "Kuidas on admirali nimi?", "Mäng on läbi", JOptionPane.INFORMATION_MESSAGE);
@@ -80,11 +83,12 @@ public class Controller implements MouseListener, MouseMotionListener {
             if(name == null ||name.trim().isEmpty()) {
                 name = "Teadmata"; //Kasutaja ei sisestanud nime ja saab automaatselt
             }
-            //TODO edetabeli faili ja andmebaasi lisamine
             saveEntryToFile(name.trim()); //Faili kirjutamine
             //Andmebaasi lisamine
             saveEntryToTable(name.trim());
+
         }
+
     }
 
     private void saveEntryToTable(String name) {
