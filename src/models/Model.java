@@ -166,6 +166,14 @@ public class Model {
         return scoreData;
     }
 
+    /**
+     * Nullib olnud mängu ja laua maatriksi data
+     */
+    public void resetBoard() {
+        game = null;
+        gridData = new ArrayList<>();
+    }
+
     //GETTERS
     public int getBoardSize() {
         return boardSize;

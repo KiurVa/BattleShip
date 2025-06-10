@@ -17,6 +17,7 @@ public class MyComboBoxListener implements ItemListener {
     @Override
     public void itemStateChanged(ItemEvent e) {
         if  (e.getStateChange() == ItemEvent.SELECTED) {
+            model.resetBoard();
             String number =  e.getItem().toString(); // Võta väärtus tekstina
             int size = Integer.parseInt(number); //Tee eelnev nr string täisarvuks
             view.getLblGameBoard().setText(String.format("%d x %d", size, size));
