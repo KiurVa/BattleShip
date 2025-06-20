@@ -14,6 +14,8 @@ public class View extends JFrame {
     private Model model;
     private GameBoard gameBoard; //Mängulaud
     private InfoBoard infoBoard; //teadetetahvel
+    private JPanel scoreboardPanel; // Panel põhiaknas edetabeli jaoks
+    private JPanel container;
 
     public View(Model model) {
         super("Laevade pommitamine");
@@ -31,6 +33,41 @@ public class View extends JFrame {
 //        System.out.println("GameBoard     " +  gameBoard.getLayout());
 //        System.out.println("InfoBoard     " +  infoBoard.getLayout());
 //        System.out.println("pnlCompoments " + infoBoard.getPnlComponent().getLayout());
+    }
+
+    public void showMainWindowScoreboard(JTable table, String title) {
+        //Kui edetabel on juba ekraanil, siis eemaldame selle
+        if (scoreboardPanel != null) {
+            remove(scoreboardPanel);
+        }
+
+        // Loob uue paneeli
+        scoreboardPanel = new JPanel(new BorderLayout());
+        scoreboardPanel.setBorder(BorderFactory.createTitledBorder(title));
+
+        // Lisab tabeli koos kerimisribaga
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(600, 300));
+        scoreboardPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Loob sulgemise nupu
+        JButton closeButton = new JButton("Sulge");
+        closeButton.addActionListener(_ -> {
+            remove(scoreboardPanel);
+            revalidate();
+            repaint();
+        });
+
+        // Paneb nupu alumisse serva
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(closeButton);
+        scoreboardPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Lisab paneli põhiaknasse
+        add(scoreboardPanel, BorderLayout.SOUTH);
+
+        revalidate();
+        repaint();
     }
 
     public void registerGameBoardMouse(Controller controller) {

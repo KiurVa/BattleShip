@@ -23,7 +23,6 @@ public class MyScoreboardListener implements ActionListener {
     private Model model;
     private View view;
     private JDialog dlgScoreboard;
-    private JPanel scoreboardPanel; // Panel põhiaknas edetabeli jaoks
 
     public MyScoreboardListener(Model model, View view) {
         this.model = model;
@@ -122,7 +121,7 @@ public class MyScoreboardListener implements ActionListener {
                 dlgScoreboard.add(scrollPane);
                 dlgScoreboard.setTitle("Edetabel andmebaas");
             } else {
-                showMainWindowScoreboard(table, "Edetabel andmebaas");
+                view.showMainWindowScoreboard(table, "Edetabel andmebaas");
             }
 
             return true;
@@ -156,46 +155,11 @@ public class MyScoreboardListener implements ActionListener {
                 dlgScoreboard.add(new JScrollPane(table));
                 dlgScoreboard.setTitle("Edetabel Failist");
             } else {
-                showMainWindowScoreboard(table, "Edetabel Failist");
+                view.showMainWindowScoreboard(table, "Edetabel Failist");
             }
             return true;
         }
         return false;
-    }
-
-    private void showMainWindowScoreboard(JTable table, String title) {
-        //Kui edetabel on juba ekraanil, siis eemaldame selle
-        if (scoreboardPanel != null) {
-            view.remove(scoreboardPanel);
-        }
-
-        // Loob uue paneeli
-        scoreboardPanel = new JPanel(new BorderLayout());
-        scoreboardPanel.setBorder(BorderFactory.createTitledBorder(title));
-
-        // Lisab tabeli koos kerimisribaga
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(600, 300));
-        scoreboardPanel.add(scrollPane, BorderLayout.CENTER);
-
-        // Loob sulgemise nupu
-        JButton closeButton = new JButton("Sulge");
-        closeButton.addActionListener(_ -> {
-            view.remove(scoreboardPanel);
-            view.revalidate();
-            view.repaint();
-        });
-
-        // Paneme nupu alumisse serva
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(closeButton);
-        scoreboardPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-        // Lisame paneli põhiaknasse
-        view.add(scoreboardPanel, BorderLayout.CENTER);
-
-        view.revalidate();
-        view.repaint();
     }
 
     private void setupDlgScoreboard() {
