@@ -35,7 +35,13 @@ public class View extends JFrame {
 //        System.out.println("pnlCompoments " + infoBoard.getPnlComponent().getLayout());
     }
 
+    /**
+     * Näitab edetabelit põhiaknas
+     * @param table edetabeli tabel
+     * @param title edetabeli nimi
+     */
     public void showMainWindowScoreboard(JTable table, String title) {
+        //Eemaldab containeri, millel on infoboard ja gameboard
         remove(container);
 
         // Loob uue paneeli
