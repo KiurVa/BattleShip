@@ -59,7 +59,7 @@ public class Controller implements MouseListener, MouseMotionListener {
                 view.getLblShip().setText(String.format("%d / %d", model.getGame().getShipsCounter(), model.getGame().getShipsParts()));
             }
             //Näitab konsoolis mängulauda
-            model.getGame().showGameBoard();
+            //model.getGame().showGameBoard();
 
             view.repaint();
             //Kontrollib mängu lõppu

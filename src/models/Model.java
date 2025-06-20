@@ -95,8 +95,8 @@ public class Model {
                     break;
                 default:
                     if (cellValue >= 1 && cellValue <= 5) {
-                        //Kommenteeri välja kui ei soovi mängulaua laevu näha
-                        //color = new Color(0, 191, 255);
+                        //Kommenteeri välja kui ei soovid laual laevu näha
+                        color = new Color(0, 190, 255);
                     }
 
 

@@ -21,21 +21,20 @@ public class Game {
     /**
      * Näita konsoolis mängulaua sisu
      */
-    public void showGameBoard() {
-        System.out.println(); //Tühi rida
-        for (int row = 0; row < boardSize; row++) {
-            for (int col = 0; col < boardSize; col++) {
-                System.out.print(boardMatrix[row][col] + " ");
-            }
-            System.out.println(); //Veeru lõpus uuele reale
-        }
-    }
+//    public void showGameBoard() {
+//        System.out.println(); //Tühi rida
+//        for (int row = 0; row < boardSize; row++) {
+//            for (int col = 0; col < boardSize; col++) {
+//                System.out.print(boardMatrix[row][col] + " ");
+//            }
+//            System.out.println(); //Veeru lõpus uuele reale
+//        }
+//    }
 
     public void setupGameBoard() {
         boardMatrix = new int[boardSize][boardSize]; //Uus laua suurus
         int shipsTotal = ships.length; //Kui palju on laevu kokku
         int shipsPlaced = 0; //Kui palju on laevu paigutatud
-        //TODO laevade järjekorra segamine
 
         while (shipsPlaced < shipsTotal) {
             int length = ships[shipsPlaced]; //Millist laeva paigutada (laeva pikkus)

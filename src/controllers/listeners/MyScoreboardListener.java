@@ -10,23 +10,20 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class MyScoreboardListener implements ActionListener {
     private Model model;
     private View view;
     private JDialog dlgScoreboard;
+    private JPanel scoreboardPanel; // Panel põhiaknas edetabeli jaoks
 
     public MyScoreboardListener(Model model, View view) {
         this.model = model;
@@ -36,18 +33,25 @@ public class MyScoreboardListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         ArrayList<ScoreData> result;
+
+        boolean showInSeparateWindow = view.getChkWhere().isSelected(); //Muutuja, et kontrollida, kas linnuke tehtud või mitte
+
         if (view.getRdoFile().isSelected()) {
             result = model.readFromFile();
-            if (createTable(result)) {
-                setupDlgScoreboard();
+            if (createTable(result, showInSeparateWindow)) {
+                if (showInSeparateWindow) {
+                    setupDlgScoreboard();
+                }
             } else {
                 JOptionPane.showMessageDialog(view, "Andmeid pole");
             }
         } else { //andmebaas
             try (Database db = new Database(model)) {
                 result = db.select(model.getBoardSize());
-                if (!result.isEmpty() && createTableDb(result)) {
-                    setupDlgScoreboard();
+                if (!result.isEmpty() && createTableDb(result, showInSeparateWindow)) {
+                    if (showInSeparateWindow) {
+                        setupDlgScoreboard();
+                    }
                 } else {
                     JOptionPane.showMessageDialog(view, "Andmebaasi tabel on tühi");
                 }
@@ -57,7 +61,7 @@ public class MyScoreboardListener implements ActionListener {
         }
     }
 
-    private boolean createTableDb(ArrayList<ScoreData> result) {
+    private boolean createTableDb(ArrayList<ScoreData> result, boolean showInSeparateWindow) {
         if (!result.isEmpty()) {
             String[][] data = new String[result.size()][5]; //Viie veeruga tabel
             for (int i = 0; i < result.size(); i++) {
@@ -112,16 +116,21 @@ public class MyScoreboardListener implements ActionListener {
                 table.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
             }
 
-            dlgScoreboard = new ScoreBoardDialog(view);
-            JScrollPane scrollPane = new JScrollPane(table);
-            dlgScoreboard.add(scrollPane);
-            dlgScoreboard.setTitle("Edetabel andmebaas");
+            if(showInSeparateWindow) {
+                dlgScoreboard = new ScoreBoardDialog(view);
+                JScrollPane scrollPane = new JScrollPane(table);
+                dlgScoreboard.add(scrollPane);
+                dlgScoreboard.setTitle("Edetabel andmebaas");
+            } else {
+                showMainWindowScoreboard(table, "Edetabel andmebaas");
+            }
+
             return true;
         }
         return false;
     }
 
-    private boolean createTable(ArrayList<ScoreData> result) {
+    private boolean createTable(ArrayList<ScoreData> result, boolean showInSeparateWindow) {
         if (!result.isEmpty()) {
             Collections.sort(result); //ScoreData failis see meetod
             //Loome kahe mõõtmelise stringide massiivi
@@ -141,13 +150,52 @@ public class MyScoreboardListener implements ActionListener {
                 table.getColumnModel().getColumn(i).setPreferredWidth(columnWidths[i]);
             }
 
-            //Loo Edetabeli aken kerimisribaga
-            dlgScoreboard = new ScoreBoardDialog(view);
-            dlgScoreboard.add(new JScrollPane(table));
-            dlgScoreboard.setTitle("Edetabel Failist");
+            if (showInSeparateWindow) {
+                //Loo Edetabeli aken kerimisribaga
+                dlgScoreboard = new ScoreBoardDialog(view);
+                dlgScoreboard.add(new JScrollPane(table));
+                dlgScoreboard.setTitle("Edetabel Failist");
+            } else {
+                showMainWindowScoreboard(table, "Edetabel Failist");
+            }
             return true;
         }
         return false;
+    }
+
+    private void showMainWindowScoreboard(JTable table, String title) {
+        //Kui edetabel on juba ekraanil, siis eemaldame selle
+        if (scoreboardPanel != null) {
+            view.remove(scoreboardPanel);
+        }
+
+        // Loob uue paneeli
+        scoreboardPanel = new JPanel(new BorderLayout());
+        scoreboardPanel.setBorder(BorderFactory.createTitledBorder(title));
+
+        // Lisab tabeli koos kerimisribaga
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(600, 300));
+        scoreboardPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Loob sulgemise nupu
+        JButton closeButton = new JButton("Sulge");
+        closeButton.addActionListener(_ -> {
+            view.remove(scoreboardPanel);
+            view.revalidate();
+            view.repaint();
+        });
+
+        // Paneme nupu alumisse serva
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(closeButton);
+        scoreboardPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Lisame paneli põhiaknasse
+        view.add(scoreboardPanel, BorderLayout.CENTER);
+
+        view.revalidate();
+        view.repaint();
     }
 
     private void setupDlgScoreboard() {
