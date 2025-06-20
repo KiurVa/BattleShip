@@ -17,7 +17,7 @@ public class GameBoard extends JPanel {
 
     public GameBoard(Model model) {
         this.model = model;
-        setBackground(new Color(189, 202, 211));
+        setBackground(new Color(0, 190, 255));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class GameBoard extends JPanel {
 
     private void drawColumnAlphabet(Graphics g) {
         int i = 0; //tähestiku massiivi esimese tähe indeks
-        g.setColor(Color.WHITE); //Tähetiku joonestamine värv
+        g.setColor(Color.WHITE); //Tähestiku joonestamine värv
 
         for (int x = startX; x <= (width * model.getBoardSize()) + width; x += width) {
             g.drawRect(x, startY, width, height);  //Joonistab ruudu 30x30

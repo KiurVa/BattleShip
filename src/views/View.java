@@ -23,7 +23,7 @@ public class View extends JFrame {
         gameBoard = new GameBoard(model); //Mänulaua loomine
         infoBoard = new InfoBoard(); //Loob teadetetahvli
 
-        JPanel container = new JPanel(new BorderLayout());
+        container = new JPanel(new BorderLayout());
         container.add(gameBoard, BorderLayout.CENTER); //Mängulaud ujuvale osale
         container.add(infoBoard, BorderLayout.EAST);
         add(container);
@@ -36,10 +36,7 @@ public class View extends JFrame {
     }
 
     public void showMainWindowScoreboard(JTable table, String title) {
-        //Kui edetabel on juba ekraanil, siis eemaldame selle
-        if (scoreboardPanel != null) {
-            remove(scoreboardPanel);
-        }
+        remove(container);
 
         // Loob uue paneeli
         scoreboardPanel = new JPanel(new BorderLayout());
@@ -47,13 +44,13 @@ public class View extends JFrame {
 
         // Lisab tabeli koos kerimisribaga
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(600, 300));
         scoreboardPanel.add(scrollPane, BorderLayout.CENTER);
 
         // Loob sulgemise nupu
         JButton closeButton = new JButton("Sulge");
         closeButton.addActionListener(_ -> {
             remove(scoreboardPanel);
+            add(container);
             revalidate();
             repaint();
         });
@@ -63,9 +60,8 @@ public class View extends JFrame {
         buttonPanel.add(closeButton);
         scoreboardPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Lisab paneli põhiaknasse
-        add(scoreboardPanel, BorderLayout.SOUTH);
-
+        // Lisab paneeli põhiaknasse
+        add(scoreboardPanel, BorderLayout.CENTER);
         revalidate();
         repaint();
     }
