@@ -72,6 +72,7 @@ public class Controller implements MouseListener, MouseMotionListener {
     private void checkGameOver() {
         if(model.getGame() != null && model.getGame().isGameOver()) {
             gameTimer.stop(); //peatab aja
+            view.getLblTime().setText(gameTimer.formatGameTime()); //Et mänguaeg vastaks label oleva arvuga
             view.getBtnNewGame().setText("Uus mäng");
             view.setScoreSizeControlsEnabled(true);
             //JOptionPane.showMessageDialog(view, "Mängu aeg: " + gameTimer.formatGameTime());
